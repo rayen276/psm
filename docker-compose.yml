@@ -1,0 +1,40 @@
+# Lancer : docker compose up -d --build   ->  http://localhost:8080
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: change-me
+      MYSQL_DATABASE: psm_db
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pchange-me"]
+      interval: 10s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: db
+      DB_NAME: psm_db
+      DB_USERNAME: root
+      DB_PASSWORD: change-me
+      JWT_SECRET: ${JWT_SECRET:?definir JWT_SECRET (base64, 32 octets minimum)}
+      ADMIN_EMAIL: admin@psm.com
+      ADMIN_PASSWORD: Admin@123
+      ADMIN_NOTIFY_EMAIL: admin@psm.com
+      # MAIL_HOST: smtp.gmail.com
+      # MAIL_PORT: 587
+      # MAIL_USERNAME: votre.compte@gmail.com
+      # MAIL_PASSWORD: mot-de-passe-application
+      # MAIL_SMTP_AUTH: "true"
+      # MAIL_STARTTLS: "true"
+volumes:
+  dbdata:

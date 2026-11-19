@@ -1,0 +1,112 @@
+<div class="auth-page-wrapper pt-5">
+  <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
+    <div class="bg-overlay"></div>
+    <div class="shape">
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 120">
+        <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+      </svg>
+    </div>
+  </div>
+
+  <div class="auth-page-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-center mt-sm-5 mb-4 text-white-50">
+            <a routerLink="/" class="d-inline-block auth-logo">
+              <img src="assets/images/logo-light.png" alt="PSM" height="20">
+            </a>
+            <p class="mt-3 fs-15 fw-medium">Projects Manager - SmartSoft Solutions</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+          <div class="card mt-4">
+            <div class="card-body p-4">
+              <div class="text-center mt-2">
+                <h5 class="text-primary">Creer un compte</h5>
+                <p class="text-muted">Un administrateur sera prevenu par email de votre inscription.</p>
+              </div>
+
+              <div class="alert alert-danger mt-3 mb-0" role="alert" *ngIf="error">{{ error }}</div>
+
+              <div class="p-2 mt-4">
+                <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Nom"
+                        [ngClass]="{ 'is-invalid': submitted && f['nom'].errors }">
+                      <div class="invalid-feedback">Le nom est obligatoire</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="prenom" class="form-label">Prenom <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="prenom" formControlName="prenom" placeholder="Prenom"
+                        [ngClass]="{ 'is-invalid': submitted && f['prenom'].errors }">
+                      <div class="invalid-feedback">Le prenom est obligatoire</div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="email" formControlName="email" placeholder="Adresse email"
+                      [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+                    <div class="invalid-feedback">Veuillez saisir un email valide</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="tel" class="form-label">Telephone</label>
+                    <input type="text" class="form-control" id="tel" formControlName="tel" placeholder="Telephone">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="password" formControlName="password"
+                      placeholder="6 caracteres minimum" autocomplete="new-password"
+                      [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+                    <div class="invalid-feedback">Le mot de passe doit contenir au moins 6 caracteres</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="confirm" class="form-label">Confirmer le mot de passe <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="confirm" formControlName="confirm"
+                      placeholder="Confirmer" autocomplete="new-password"
+                      [ngClass]="{ 'is-invalid': submitted && (f['confirm'].errors || signupForm.errors?.['mismatch']) }">
+                    <div class="invalid-feedback">Les mots de passe ne correspondent pas</div>
+                  </div>
+
+                  <div class="mt-4">
+                    <button class="btn btn-success w-100" type="submit" [disabled]="loading">
+                      <span class="spinner-border spinner-border-sm me-1" *ngIf="loading"></span>
+                      S'inscrire
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 text-center">
+            <p class="mb-0">Deja un compte ?
+              <a routerLink="/auth/login" class="fw-semibold text-primary text-decoration-underline">Se connecter</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-center">
+            <p class="mb-0 text-muted">&copy; {{ year }} PSM - SmartSoft Solutions</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

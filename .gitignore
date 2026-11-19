@@ -1,0 +1,9 @@
+node_modules/
+dist/
+target/
+.angular/
+*.iml
+.idea/
+.vscode/
+backend/src/main/resources/static/*
+!backend/src/main/resources/static/index.html

@@ -1,0 +1,130 @@
+<app-page-header title="Tableau de bord"></app-page-header>
+
+<div class="row" *ngIf="session.user as u">
+  <div class="col-12">
+    <div class="alert alert-primary d-flex align-items-center" role="alert">
+      <i class="ri-user-smile-line fs-20 me-2"></i>
+      <div>Bonjour <b>{{ u.prenom }} {{ u.nom }}</b> &mdash; connecte en tant que
+        <span class="badge bg-primary">{{ session.isAdmin ? 'ADMIN' : 'COLLABORATEUR' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+<div class="text-center py-5" *ngIf="loading"><div class="spinner-border text-primary"></div></div>
+
+<ng-container *ngIf="stats">
+  <div class="row">
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">Clients</p>
+              <h4 class="fs-22 fw-semibold mt-3 mb-0">{{ stats.totalClients }}</h4>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-soft-primary rounded fs-3"><i class="ri-team-line text-primary"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">Projets</p>
+              <h4 class="fs-22 fw-semibold mt-3 mb-0">{{ stats.totalProjets }}</h4>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-soft-success rounded fs-3"><i class="ri-folders-line text-success"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">Budget total</p>
+              <h4 class="fs-22 fw-semibold mt-3 mb-0">{{ stats.budgetTotal | number:'1.0-0' }} DT</h4>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-soft-warning rounded fs-3"><i class="ri-money-dollar-circle-line text-warning"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">Budget moyen / projet</p>
+              <h4 class="fs-22 fw-semibold mt-3 mb-0">{{ stats.budgetMoyen | number:'1.0-0' }} DT</h4>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-soft-info rounded fs-3"><i class="ri-bar-chart-line text-info"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-6">
+      <div class="card">
+        <div class="card-header"><h5 class="card-title mb-0">Top clients par budget</h5></div>
+        <div class="card-body">
+          <p class="text-muted mb-0" *ngIf="stats.topClients.length === 0">Aucun client pour le moment.</p>
+          <div class="mb-3" *ngFor="let c of stats.topClients">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="fw-medium">{{ c.clientNom }}
+                <span class="text-muted fs-12">({{ c.nbProjets }} projet{{ c.nbProjets > 1 ? 's' : '' }})</span></span>
+              <span>{{ c.budget | number:'1.0-0' }} DT</span>
+            </div>
+            <div class="progress progress-sm">
+              <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="part(c.budget)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-6">
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <h5 class="card-title mb-0 flex-grow-1">Derniers projets</h5>
+          <a routerLink="/projets" class="btn btn-soft-primary btn-sm">Voir tout</a>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-borderless table-nowrap align-middle mb-0">
+              <thead class="table-light">
+                <tr><th>Projet</th><th>Client</th><th class="text-end">Budget</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of derniersProjets">
+                  <td class="fw-medium">{{ p.libelle }}</td>
+                  <td>{{ p.clientNom }}</td>
+                  <td class="text-end">{{ p.budget | number:'1.0-0' }} DT</td>
+                </tr>
+                <tr *ngIf="derniersProjets.length === 0">
+                  <td colspan="3" class="text-center text-muted">Aucun projet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
